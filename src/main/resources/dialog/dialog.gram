@@ -1,0 +1,29 @@
+#JSGF V1.0;
+
+grammar dialog;
+
+<digit> = zero  |
+          one   |
+          two   |
+          three |
+          four  |
+          five  |
+          six   |
+          seven |
+          eight |
+          nine  ;
+
+<number> = <digit>+ [point <digit>+];
+
+<menu_command> =  digits                     |
+				  [yes | no]				 |
+                  [go to [the]] bank account |
+                  open notepad				 |
+                  exit [[the] program]       ;
+
+<bank_command> = [show | check] balance |
+                 deposit <number>       |
+                 withdraw <number>      |
+                 back                   ;
+
+public <command> = <menu_command> | <bank_command>;

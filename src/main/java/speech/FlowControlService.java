@@ -40,7 +40,12 @@ public class FlowControlService {
 			Runtime r=Runtime.getRuntime();
 			Process p;
 			try {
-				p = r.exec("gedit");
+				if(System.getProperty("os.name").toLowerCase().contains("windows")) {
+					p = r.exec("notepad");
+				}else if(System.getProperty("os.name").toLowerCase().contains("linux")) {
+					p=r.exec("gedit");
+				}
+				
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

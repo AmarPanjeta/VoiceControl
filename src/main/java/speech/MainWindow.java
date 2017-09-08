@@ -16,7 +16,7 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-public class win {
+public class MainWindow {
 
 	private JFrame frame;
 	private Boolean recongitionStarted;
@@ -31,7 +31,7 @@ public class win {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					win window = new win();
+					MainWindow window = new MainWindow();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -43,7 +43,7 @@ public class win {
 	/**
 	 * Create the application.
 	 */
-	public win() {
+	public MainWindow() {
 		recongitionStarted = false;
 		rts = null;
 		initialize();

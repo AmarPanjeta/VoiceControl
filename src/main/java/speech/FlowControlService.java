@@ -13,7 +13,7 @@ public class FlowControlService {
 	private String previousCommand;
 	
 	private JLabel instructionsLabel;
-	private JLabel inputLabel;
+	private JLabel additionalLabel;
 	
     private static final Map<Integer, String> INSTRUCTIONS =
 	        new HashMap<Integer, String>();
@@ -23,9 +23,9 @@ public class FlowControlService {
 	        INSTRUCTIONS.put(2,"<html>This is bank account voice menu: <br> Example: balance <br>Example: withdraw zero point five <br> Example: deposit one two three <br> Example: back </html>");
 	    }
 	
-	public FlowControlService(JLabel instructionsLabel,JLabel inputLabel){
+	public FlowControlService(JLabel instructionsLabel,JLabel additionalLabel){
 		this.instructionsLabel=instructionsLabel;
-		this.inputLabel=inputLabel;
+		this.additionalLabel=additionalLabel;
 		this.step=1;
 		this.balance=0.00;
 		this.instructionsLabel.setText(INSTRUCTIONS.get(step));
@@ -80,22 +80,22 @@ public class FlowControlService {
 	public void advanceStepAndSetInstructions(int step){
 		this.step=step;
 		this.instructionsLabel.setText(INSTRUCTIONS.get(step));
-		this.inputLabel.setText("");
+		this.additionalLabel.setText("");
 	}
 	
 	public void advanceStepAndSetInput(int step, String command){
 		this.step=step;
-		this.inputLabel.setText("<html>Did you mean:[Yes/No] <br>"+command +"<br></html>");
+		this.additionalLabel.setText("<html>Did you mean:[Yes/No] <br>"+command +"<br></html>");
 		this.previousCommand=command;
 	}
 	
 	public void outputBalance(){
-		this.inputLabel.setText("Balance: "+ balance.toString());
+		this.additionalLabel.setText("Balance: "+ balance.toString());
 	}
 	
 	public void clearInput(){
 		this.previousCommand="";
-		this.inputLabel.setText("");
+		this.additionalLabel.setText("");
 		this.step=2;
 	}
 	
@@ -104,11 +104,11 @@ public class FlowControlService {
 			Double number=StringToNumberUtils.parseNumber(previousCommand.split("\\s"));
 			if(previousCommand.contains("deposit")){
 				balance+=number;
-				inputLabel.setText("Deposited: "+ number.toString());
+				additionalLabel.setText("Deposited: "+ number.toString());
 			}
 			else{
 				balance-=number;
-				inputLabel.setText("Withdrawn: "+ number.toString());
+				additionalLabel.setText("Withdrawn: "+ number.toString());
 			}
 			previousCommand="";
 			step=2;

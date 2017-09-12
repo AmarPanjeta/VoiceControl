@@ -11,19 +11,20 @@ import edu.cmu.sphinx.api.SpeechResult;
 
 public class RecognitionThreadService extends Thread{
 	
-	private Thread t;
+	private Thread thread;
 	private String threadName;
-	private volatile Boolean run=false;
+	private volatile Boolean run;
 	private FlowControlService flowControlService;
 	
 	public RecognitionThreadService(String name,FlowControlService flowControlService) {
 		this.threadName = name;
 		this.flowControlService=flowControlService;
+		this.run=false;
 	    System.out.println("Creating " +  threadName );
 	}
 	@Override
 	public void run() {
-		System.out.println("radi");
+		System.out.println("Loading configuration");
         Configuration configuration = new Configuration();
 
         configuration.setAcousticModelPath("resource:/edu/cmu/sphinx/models/en-us/en-us");
@@ -38,7 +39,7 @@ public class RecognitionThreadService extends Thread{
 			// Start recognition process pruning previously cached data.
 		     recognizer.startRecognition(true);
 		     SpeechResult result;
-		     System.out.println("started!");
+		     System.out.println("Recognition started!");
 		     while ((result = recognizer.getResult()) != null && run == true) {
 		    	    System.out.println(result.getHypothesis());
 		    	 	flowControlService.next(result.getHypothesis());
@@ -47,7 +48,6 @@ public class RecognitionThreadService extends Thread{
 		    	}
 		     // Pause recognition process. It can be resumed then with startRecognition(false).
 		     recognizer.stopRecognition();
-		     System.out.println("XOXO");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -55,16 +55,16 @@ public class RecognitionThreadService extends Thread{
 	
 	@Override
 	public synchronized void start() {
-		if(t == null) {
-          t = new Thread (this, threadName);
+		if(thread == null) {
+          thread = new Thread (this, threadName);
           run = true;
-          t.start ();
+          thread.start ();
 		}
 	}
 	
 	public synchronized void stopRecognition(){
 		run = false;
-		System.out.println("to je to");
+		System.out.println("Recongition stopped.");
 	}
 }
 
